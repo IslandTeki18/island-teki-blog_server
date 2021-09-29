@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import Post from "../models/post/postModel.js";
+import Post from "../models/blogModel.js";
 
 //@desc     Get all posts
 //@route    GET /api/posts
