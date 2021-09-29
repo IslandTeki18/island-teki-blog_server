@@ -5,8 +5,8 @@ import connectDB from "./config/db.js";
 import cors from "cors";
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 // import routes here
-import blogRoutes from "./routes/blogRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
+import blogRoutes from "./routes/post.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 dotenv.config();
 const app = express();

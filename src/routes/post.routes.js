@@ -8,7 +8,7 @@ import {
     updatePostById,
     postCommentOnPost,
     deleteCommentOnPost,
-} from "../controllers/blogController.js";
+} from "../controllers/post.controller.js";
 import { admin, protect } from "../middleware/authMiddleware.js";
 
 router.route("/").get(getAllPost).post(protect, admin, postNewPost);

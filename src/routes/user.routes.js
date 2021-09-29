@@ -4,7 +4,7 @@ import {
     getAdminProfile,
     postAuthUser,
     putUpdateAdmin,
-} from "../controllers/userController.js";
+} from "../controllers/user.controller.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
 router.post("/admin/login", postAuthUser);
