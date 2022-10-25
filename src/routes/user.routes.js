@@ -7,7 +7,7 @@ import {
 } from "../controllers/user.controller.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
-router.post("/admin/login", postAuthUser);
+router.post("/login", postAuthUser);
 router
     .route("/settings")
     .put(protect, admin, putUpdateAdmin)
