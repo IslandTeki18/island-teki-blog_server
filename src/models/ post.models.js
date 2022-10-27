@@ -103,27 +103,27 @@ const PostSchema = mongoose.Schema(
             isFitnessPost: {
                 type: Boolean,
                 required: true,
-                default: true,
+                default: false,
             },
             isCodingPost: {
                 type: Boolean,
                 required: true,
-                default: true,
+                default: false,
             },
             isTravelPost: {
                 type: Boolean,
                 required: true,
-                default: true,
+                default: false,
             },
             isFoodPost: {
                 type: Boolean,
                 required: true,
-                default: true,
+                default: false,
             },
             isGamingPost: {
                 type: Boolean,
                 required: true,
-                default: true,
+                default: false,
             },
         },
     },
