@@ -25,38 +25,6 @@ const CommentSchema = mongoose.Schema(
     }
 );
 
-const TagSchema = mongoose.Schema({
-    title: {
-        type: String,
-        required: true,
-        default: false,
-    },
-    content: {
-        type: String,
-        required: true,
-    },
-});
-
-const CategorySchema = mongoose.Schema({
-    postId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Post",
-        required: true,
-    },
-    title: {
-        type: String,
-        required: true,
-    },
-    content: {
-        type: String,
-        required: true,
-    },
-    published: {
-        type: Boolean,
-        default: false,
-    },
-});
-
 const PostSchema = mongoose.Schema(
     {
         author: {
@@ -97,8 +65,6 @@ const PostSchema = mongoose.Schema(
             default: false,
         },
         postComments: [CommentSchema],
-        postTags: [TagSchema],
-        postCategories: [CategorySchema],
         postType: {
             isFitnessPost: {
                 type: Boolean,

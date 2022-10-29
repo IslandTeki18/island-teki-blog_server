@@ -30,7 +30,7 @@ const postAuthUser = async (req, res, next) => {
 //@desc     Get admin profile
 //@route    GET /api/users/profile
 //@access   Private
-const getAdminProfile = asyncHandler(async (req, res) => {
+const getAdminProfile = async (req, res, next) => {
   const user = await User.findById(req.user._id);
   if (user) {
     res.json({
@@ -42,12 +42,12 @@ const getAdminProfile = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("User not found");
   }
-});
+};
 
 //@desc     Update User Settings
 //@route    PUT /api/users/profile/settings
 //@access   Private/Admin
-const putUpdateAdmin = asyncHandler(async (req, res) => {
+const putUpdateAdmin = async (req, res, next) => {
   const user = await User.findById(req.user._id);
   if (user) {
     user.username = req.body.username || user.username;
@@ -66,6 +66,6 @@ const putUpdateAdmin = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("User not found");
   }
-});
+};
 
 export { postAuthUser, getAdminProfile, putUpdateAdmin };

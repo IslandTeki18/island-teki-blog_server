@@ -1,4 +1,3 @@
-import asyncHandler from "express-async-handler";
 import Post from "../models/ post.models.js";
 
 //@desc     Get all posts
@@ -157,7 +156,7 @@ const deleteCommentOnPost = async (req, res, next) => {
 
 //@desc     Update post comment by ID
 //@route    PUT /api/posts/:comment_id/update
-//@access   Public
+//@access   Private
 const updateCommentOnPost = async (req, res, next) => {
   try {
     const post = await Post.updateOne(
