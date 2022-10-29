@@ -126,7 +126,7 @@ const postCommentOnPost = async (req, res, next) => {
         title: req.body.title,
         comment: req.body.comment,
       };
-      post.postComments.push(newComment);
+      post.postComments.unshift(newComment);
       await post.save();
       res.status(200).json({ msg: "Comment Added." });
     }
@@ -156,18 +156,20 @@ const deleteCommentOnPost = async (req, res, next) => {
 };
 
 //@desc     Update post comment by ID
-//@route    PUT /api/posts/:id/:comment_id/update
+//@route    PUT /api/posts/:comment_id/update
 //@access   Public
 const updateCommentOnPost = async (req, res, next) => {
   try {
-    const post = await Post.findById({ _id: req.params.id });
-    if (!post) return res.status(404).send("Post not found.");
-    const postComment = post.postComments.filter(
-      (comment) => comment._id === req.params.comment_id
+    const post = await Post.updateOne(
+      { "postComments._id": req.params.comment_id },
+      {
+        $set: {
+          "postComments.$.title": req.body.title,
+          "postComments.$.comment": req.body.comment,
+        },
+      }
     );
-    postComment.title = req.body.title;
-    postComment.comment = req.body.comment;
-    await post.save();
+    if (!post) return res.status(404).send("Post not found.");
     res.status(200).json({ msg: "Comment Updated" });
   } catch (error) {
     res.status(500);

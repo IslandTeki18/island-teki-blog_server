@@ -20,6 +20,6 @@ router
   .put(protect, admin, updatePostById);
 router.route("/:id/comment").post(protect, postCommentOnPost);
 router.route("/:id/:comment_id").delete(protect, admin, deleteCommentOnPost);
-router.route("/:id/:comment_id/update").put(protect, updateCommentOnPost);
+router.route("/:comment_id/update").put(protect, updateCommentOnPost);
 
 export default router;
