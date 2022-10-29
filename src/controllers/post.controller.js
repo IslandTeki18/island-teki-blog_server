@@ -89,21 +89,18 @@ const updatePostById = async (req, res, next) => {
   try {
     const post = await Post.findById({ _id: req.params.id });
     if (!post) return res.status(404).send({ msg: "No Post Found!" });
-    if (post) {
-      post.title = req.body.title;
-      post.postImage = req.body.postImage;
-      post.summary = req.body.summary;
-      post.tldr = req.body.tldr;
-      post.published = req.body.published;
-      post.content = req.body.content;
-      post.updatedAt = req.body.updatedAt;
-      post.postType.isFitnessPost = req.body.postType.isFitnessPost;
-      post.postType.isCodingPost = req.body.postType.isCodingPost;
-      post.postType.isTravelPost = req.body.postType.isTravelPost;
-      post.postType.isFoodPost = req.body.postType.isFoodPost;
-      post.postType.isGamingPost = req.body.postType.isGamingPost;
-      
-    }
+    post.title = req.body.title;
+    post.postImage = req.body.postImage;
+    post.summary = req.body.summary;
+    post.tldr = req.body.tldr;
+    post.published = req.body.published;
+    post.content = req.body.content;
+    post.updatedAt = req.body.updatedAt;
+    post.postType.isFitnessPost = req.body.postType.isFitnessPost;
+    post.postType.isCodingPost = req.body.postType.isCodingPost;
+    post.postType.isTravelPost = req.body.postType.isTravelPost;
+    post.postType.isFoodPost = req.body.postType.isFoodPost;
+    post.postType.isGamingPost = req.body.postType.isGamingPost;
     const updatedPost = await post.save();
     res.json(updatedPost);
   } catch (error) {
@@ -118,46 +115,65 @@ const updatePostById = async (req, res, next) => {
 //@desc     Create post comment
 //@route    POST /api/posts/:id/comment
 //@access   Private
-const postCommentOnPost = asyncHandler(async (req, res) => {
-  const { title, comment } = req.body;
-  const post = await Post.findById(req.params.id);
-  if (post) {
-    const newComment = {
-      postId: post._id,
-      user: req.user,
-      title: title,
-      comment: comment,
-    };
-    post.postComments.push(newComment);
-    await post.save();
-    res.status(200).json({ msg: "Comment Added." });
-  } else {
+const postCommentOnPost = async (req, res, next) => {
+  try {
+    const post = await Post.findById({ _id: req.params.id });
+    if (!post) return res.status(404).send("Post not found");
+    if (post) {
+      const newComment = {
+        postId: post._id,
+        username: req.user.username,
+        title: req.body.title,
+        comment: req.body.comment,
+      };
+      post.postComments.push(newComment);
+      await post.save();
+      res.status(200).json({ msg: "Comment Added." });
+    }
+  } catch (error) {
     res.status(500);
-    throw new Error("Failed to comment on post");
+    next(error);
   }
-});
+};
 
 //@desc     Delete post comment by ID
 //@route    DELETE /api/posts/:id/:comment_id
 //@access   Private / Admin
-const deleteCommentOnPost = asyncHandler(async (req, res) => {
-  const post = await Post.findById(req.params.id);
-  if (post) {
+const deleteCommentOnPost = async (req, res, next) => {
+  try {
+    const post = await Post.findById({ _id: req.params.id });
+    if (!post) return res.status(404).send("Post not found");
     const newArr = post.postComments.filter(
       (comment) => req.params.comment_id.toString() !== comment.id.toString()
     );
     post.postComments = newArr;
     await post.save();
     res.json({ msg: "Comment Removed." });
-  } else {
+  } catch (error) {
     res.status(500);
-    throw new Error("Could not delete comment");
+    next(error);
   }
-});
+};
 
 //@desc     Update post comment by ID
-//@route    PUT /api/posts/:id/:comment_id
+//@route    PUT /api/posts/:id/:comment_id/update
 //@access   Public
+const updateCommentOnPost = async (req, res, next) => {
+  try {
+    const post = await Post.findById({ _id: req.params.id });
+    if (!post) return res.status(404).send("Post not found.");
+    const postComment = post.postComments.filter(
+      (comment) => comment._id === req.params.comment_id
+    );
+    postComment.title = req.body.title;
+    postComment.comment = req.body.comment;
+    await post.save();
+    res.status(200).json({ msg: "Comment Updated" });
+  } catch (error) {
+    res.status(500);
+    next(error);
+  }
+};
 
 export {
   getAllPost,
@@ -167,4 +183,5 @@ export {
   updatePostById,
   postCommentOnPost,
   deleteCommentOnPost,
+  updateCommentOnPost,
 };

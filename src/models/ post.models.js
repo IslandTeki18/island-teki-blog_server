@@ -7,7 +7,7 @@ const CommentSchema = mongoose.Schema(
             ref: "Post",
             required: true,
         },
-        name: {
+        username: {
             type: String,
             required: true,
         },
